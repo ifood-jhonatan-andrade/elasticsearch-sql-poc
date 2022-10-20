@@ -1,0 +1,19 @@
+
+es:
+    url: vpc-catalog-metadata-elastic-udt54illsp76vzymp3xhe4qj3a.us-east-1.es.amazonaws.com
+    port: 443
+    useSSL: true
+    socket-timeout: 60000
+    connection-timeout: 1000
+    ## Catalog Metadata
+    catalog-metadata:
+        index: catalog_item_metadata
+        request-size: 10000
+        max-items: 500000
+        metrics-title: items
+    ## Merchant Metadata
+    merchant-metadata:
+        index: catalog_merchant_metadata
+        request-size: 10000
+        max-items: 1500000
+        metrics-title: merchant
