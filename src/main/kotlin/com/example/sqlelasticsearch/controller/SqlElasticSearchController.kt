@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.sql.Connection
 
 @RestController
 @RequestMapping("sql")
 class SqlElasticSearchController(
     val client: RestHighLevelClient,
-    val mapper: ObjectMapper
+    val mapper: ObjectMapper,
+    val connection: Connection
 ) {
 
     @PostMapping
@@ -29,5 +31,18 @@ class SqlElasticSearchController(
         val jsonNode = mapper.readTree(EntityUtils.toString(response.entity))
 
         return mapper.readValue(jsonNode.toString(), SqlElasticSearchResponse::class.java).datarows
+    }
+
+    @PostMapping("jdbc")
+    fun queryJDBC(@RequestBody body: SqlElasticSearchDTO): List<Any?> {
+        connection.createStatement().use { statement ->
+            statement.executeQuery(body.query).use { results ->
+                val esResult = mutableListOf<Any>()
+                while (results.next()) {
+                    esResult.add(results.row)
+                }
+                return esResult
+            }
+        }
     }
 }
