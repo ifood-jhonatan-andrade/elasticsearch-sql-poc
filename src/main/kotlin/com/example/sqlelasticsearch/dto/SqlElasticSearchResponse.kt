@@ -1,8 +1,8 @@
 package com.example.sqlelasticsearch.dto
 
-data class SqlElasticSearchResponse(
+data class SqlElasticSearchResponse<T>(
     val schema: List<Data?>?,
-    val datarows: List<List<Any?>?>?
+    val datarows: List<List<T?>?>?
 ) {
     data class Data(
         val name: String,
